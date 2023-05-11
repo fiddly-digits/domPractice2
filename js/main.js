@@ -91,22 +91,22 @@ const cleanUL = () => {
 
 searchButton.addEventListener("click", (event) => {
   cleanUL();
-  let filteredProducts = productsArray.filter((item) =>
-    item.productName.toLowerCase().includes(searchedText.toLowerCase())
-  );
-
-  filteredProducts.forEach((item) =>
-    item.productAvailability === true
-      ? appendProductToList(
-          item.productName,
-          "list-group-item-primary",
-          ".search-results"
-        )
-      : appendProductToList(
-          item.productName,
-          "list-group-item-danger",
-          ".search-results"
-        )
-  );
+  productsArray
+    .filter((item) =>
+      item.productName.toLowerCase().includes(searchedText.toLowerCase())
+    )
+    .forEach((item) =>
+      item.productAvailability === true
+        ? appendProductToList(
+            item.productName,
+            "list-group-item-primary",
+            ".search-results"
+          )
+        : appendProductToList(
+            item.productName,
+            "list-group-item-danger",
+            ".search-results"
+          )
+    );
   cleanInputs("input[name=search]");
 });
