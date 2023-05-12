@@ -1,35 +1,22 @@
 let productsArray = [];
-let productName = "";
-let productAvailability = "";
-let productDescription = "";
 let searchedText = "";
 
 const makeProductObjects = () => {
+  let productObject = {};
   let productNameElement = document.querySelector("input[name=product-name");
-
-  productNameElement.addEventListener("keyup", (event) => {
-    productName = event.target.value;
-  });
-
-  console.log(productName);
-
   let productDescriptionElement = document.querySelector(
     "input[name=product-description]"
   );
-
-  productDescriptionElement.addEventListener("keyup", (event) => {
-    productDescription = event.target.value;
-  });
-
   let productAvailabilityElement = document.querySelector(
     "input[name=product-availability]"
   );
-  productAvailability = productAvailabilityElement.checked;
-
-  return { productName, productDescription, productAvailability };
+  productObject.name = productNameElement.value;
+  productObject.description = productDescriptionElement.value;
+  productObject.availability = productAvailabilityElement.checked;
+  return productObject;
 };
 
-const appendProductToList = (name, elementClassType, whereToAppend) => {
+const createListElements = (name, elementClassType, whereToAppend) => {
   let ul = document.querySelector(whereToAppend);
   let li = document.createElement("li");
   li.classList.add("list-group-item", elementClassType);
@@ -46,30 +33,27 @@ const cleanInputs = (inputsToClean) => {
   });
 };
 
-const AddItemsToList = (array) => {
+const appendListElements = (array) => {
   let finalItemIndex = array.length - 1;
-  array[finalItemIndex].productAvailability === true
-    ? appendProductToList(
-        array[finalItemIndex].productName,
+  array[finalItemIndex].availability === true
+    ? createListElements(
+        array[finalItemIndex].name,
         "list-group-item-primary",
         ".list-group"
       )
-    : appendProductToList(
-        array[finalItemIndex].productName,
+    : createListElements(
+        array[finalItemIndex].name,
         "list-group-item-danger",
         ".list-group"
       );
 };
 
-let submitButton = document.getElementById("AddProductButton");
-
-makeProductObjects();
+let submitButton = document.getElementById("add-product");
 
 submitButton.addEventListener("click", (event) => {
   productObject = makeProductObjects();
   productsArray.push(productObject);
-  console.log(productsArray);
-  AddItemsToList(productsArray);
+  appendListElements(productsArray);
   cleanInputs(
     "input[name=product-name], input[name=product-description], input[name=product-availability]"
   );
@@ -93,17 +77,17 @@ searchButton.addEventListener("click", (event) => {
   cleanUL();
   productsArray
     .filter((item) =>
-      item.productName.toLowerCase().includes(searchedText.toLowerCase())
+      item.name.toLowerCase().includes(searchedText.toLowerCase())
     )
     .forEach((item) =>
-      item.productAvailability === true
-        ? appendProductToList(
-            item.productName,
+      item.availability === true
+        ? createListElements(
+            item.name,
             "list-group-item-primary",
             ".search-results"
           )
-        : appendProductToList(
-            item.productName,
+        : createListElements(
+            item.name,
             "list-group-item-danger",
             ".search-results"
           )
